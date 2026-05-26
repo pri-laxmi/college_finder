@@ -1,6 +1,7 @@
-"use client";
 
+"use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface College {
   id: number;
@@ -82,6 +83,12 @@ export default function ComparePage() {
             </p>
 
             <p>ROI: {college.roi}</p>
+            <Link
+              href={`/college/${college.id}`}
+              className="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              View Details
+            </Link>
           </div>
         ))}
       </div>
