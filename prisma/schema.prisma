@@ -21,4 +21,24 @@ model College {
   placements String
   overview   String
   averagePackage Int
+  savedBy     SavedCollege[]
+}
+model User {
+  id    Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+
+  saved    SavedCollege[]
+}
+model SavedCollege {
+  id         Int @id @default(autoincrement())
+
+  userId     Int
+  collegeId  Int
+
+  user       User @relation(fields: [userId], references: [id])
+  college    College @relation(fields: [collegeId], references: [id])
+
+  @@unique([userId, collegeId])
 }

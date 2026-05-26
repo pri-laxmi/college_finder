@@ -11,6 +11,7 @@ async function main() {
         rating: 4.8,
         placements: "Average package ₹20 LPA",
         overview: "Top engineering institute in India.",
+        averagePackage: 2000000,
       },
       {
         name: "BITS Pilani",
@@ -19,6 +20,7 @@ async function main() {
         rating: 4.7,
         placements: "Average package ₹18 LPA",
         overview: "Highly reputed private engineering college.",
+        averagePackage: 1800000,
       },
       {
         name: "NIT Trichy",
@@ -27,6 +29,7 @@ async function main() {
         rating: 4.6,
         placements: "Average package ₹15 LPA",
         overview: "Top NIT with excellent placements.",
+        averagePackage: 1500000,
       },
       {
         name: "VIT Vellore",
@@ -35,6 +38,7 @@ async function main() {
         rating: 4.3,
         placements: "Average package ₹10 LPA",
         overview: "Popular private engineering university.",
+        averagePackage: 1000000,
       },
       {
         name: "IIIT Hyderabad",
@@ -43,6 +47,7 @@ async function main() {
         rating: 4.7,
         placements: "Average package ₹22 LPA",
         overview: "Excellent research-focused institute.",
+        averagePackage: 2200000,
       },
     ],
   });
