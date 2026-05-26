@@ -1,9 +1,6 @@
 "use client";
-export const dynamic = "force-dynamic";
-
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 interface College {
   id: number;
@@ -16,28 +13,33 @@ interface College {
 }
 
 export default function ComparePage() {
-  const searchParams = useSearchParams();
-
-  const namesParam = searchParams.get("names") || "";
-
   const [colleges, setColleges] = useState<College[]>([]);
-  const [bestCollege, setBestCollege] = useState("");
-
-  async function compareColleges() {
-    if (!namesParam) return;
-
-    const res = await fetch(
-      `/api/compare?names=${namesParam}`
-    );
-
-    const data = await res.json();
-
-    setColleges(data.colleges || []);
-    setBestCollege(data.bestCollegeByROI || "");
-  }
+  const [bestCollege, setBestCollege] =
+    useState("");
 
   useEffect(() => {
-    compareColleges();
+    async function fetchComparison() {
+      const params =
+        new URLSearchParams(window.location.search);
+
+      const names =
+        params.get("names");
+
+      if (!names) return;
+
+      const res = await fetch(
+        `/api/compare?names=${names}`
+      );
+
+      const data = await res.json();
+
+      setColleges(data.colleges || []);
+      setBestCollege(
+        data.bestCollegeByROI || ""
+      );
+    }
+
+    fetchComparison();
   }, []);
 
   return (
@@ -62,11 +64,17 @@ export default function ComparePage() {
               {college.name}
             </h2>
 
-            <p>Location: {college.location}</p>
+            <p>
+              Location: {college.location}
+            </p>
 
-            <p>Fees: ₹{college.fees}</p>
+            <p>
+              Fees: ₹{college.fees}
+            </p>
 
-            <p>Rating: {college.rating}</p>
+            <p>
+              Rating: {college.rating}
+            </p>
 
             <p>
               Average Package: ₹
