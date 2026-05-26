@@ -1,22 +1,80 @@
-async function getCollege(id: string) {
-  const res = await fetch(
-    `/api/colleges/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
 
-  return res.json();
+"use client";
+
+import { useEffect, useState } from "react";
+
+interface College {
+  id: number;
+  name: string;
+  location: string;
+  fees: number;
+  rating: number;
+  averagePackage: number;
+  overview: string;
+  placements: string;
 }
 
-export default async function CollegeDetailPage({
+export default function CollegeDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const [college, setCollege] =
+    useState<College | null>(null);
 
-  const college = await getCollege(id);
+  async function fetchCollege() {
+    const resolvedParams =
+      await params;
+
+    const res = await fetch(
+      `/api/colleges/${resolvedParams.id}`
+    );
+
+    const data = await res.json();
+
+    setCollege(data);
+  }
+
+  async function saveCollege() {
+    const token =
+      localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    const res = await fetch(
+      "/api/saved",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          collegeId: college?.id,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("College saved");
+    } else {
+      alert(data.error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCollege();
+  }, []);
+
+  if (!college) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className="p-8">
@@ -44,6 +102,13 @@ export default async function CollegeDetailPage({
       <p className="mb-4">
         {college.overview}
       </p>
+
+      <button
+        onClick={saveCollege}
+        className="bg-blue-600 text-white px-4 py-2 rounded mb-6"
+      >
+        Save College
+      </button>
 
       <div className="border p-4 rounded">
         <h2 className="font-semibold mb-2">
