@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 interface College {
   id: number;
@@ -14,24 +15,13 @@ interface College {
   placements: string;
 }
 
-export default function CollegeDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const [college, setCollege] =
-    useState<College | null>(null);
+export default function CollegeDetailPage() {
+  const [college, setCollege] = useState<College | null>(null);
 
+  const params = useParams();
   async function fetchCollege() {
-    const resolvedParams =
-      await params;
-
-    const res = await fetch(
-      `/api/colleges/${resolvedParams.id}`
-    );
-
+    const res = await fetch(`/api/colleges/${params.id}`);
     const data = await res.json();
-
     setCollege(data);
   }
 

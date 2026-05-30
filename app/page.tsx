@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface College {
   id: number;
@@ -13,7 +14,8 @@ interface College {
 export default function Home() {
   const [colleges, setColleges] = useState<College[]>([]);
   const [search, setSearch] = useState("");
-const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
+  const router = useRouter();
   async function fetchColleges() {
     const res = await fetch(
       `/api/colleges?search=${search}`
@@ -34,30 +36,38 @@ const [selected, setSelected] = useState<string[]>([]);
       : [...prev, name]
   );
 }
+  function logout() {
+    localStorage.removeItem("token");
+    router.push("/");
+  }
 
   return (
     <main className="p-8">
       <div className="flex gap-4 mb-8">
         <a
-  href="/saved"
-  className="bg-purple-600 text-white px-4 py-2 rounded"
->
-  Saved
-</a>
+          href="/saved"
+          className="bg-purple-600 text-white px-4 py-2 rounded"
+        >
+          Saved
+        </a>
 
-  <a
-    href="/"
-    className="bg-black text-white px-4 py-2 rounded"
-  >
-    Home
-  </a>
+        <a
+          href="/"
+          className="bg-black text-white px-4 py-2 rounded"
+        >
+          Home
+        </a>
 
-  <a
-    href="/compare"
-    className="bg-blue-600 text-white px-4 py-2 rounded"
-  >
-    Compare
-  </a>
+        <a
+          href={
+            selected.length > 0
+              ? `/compare?names=${encodeURIComponent(selected.join(","))}`
+              : "/compare"
+          }
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Compare
+        </a>
 
   <a
     href="/login"
@@ -65,6 +75,12 @@ const [selected, setSelected] = useState<string[]>([]);
   >
     Login
   </a>
+   <button
+        onClick={logout}
+        className="bg-red-600 text-white px-4 py-2 rounded"
+      >
+        Logout
+      </button>
 </div>
       <h1 className="text-3xl font-bold mb-6">
         College Discovery Platform

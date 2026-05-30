@@ -25,8 +25,14 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-
     const { collegeId } = body;
+
+    if (!collegeId || typeof collegeId !== "number" || isNaN(collegeId)) {
+      return Response.json(
+        { error: "Invalid or missing collegeId" },
+        { status: 400 }
+      );
+    }
 
     const savedCollege = await prisma.savedCollege.create({
       data: {
