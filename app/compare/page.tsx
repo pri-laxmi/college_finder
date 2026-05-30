@@ -50,7 +50,7 @@ export default function ComparePage() {
       </h1>
 
       {bestCollege && (
-        <div className="mb-6 p-4 border rounded bg-green-100">
+        <div className="mb-6 p-4 border rounded bg-black-100">
           Best ROI College: {bestCollege}
         </div>
       )}

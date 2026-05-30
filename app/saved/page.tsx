@@ -22,6 +22,26 @@ export default function SavedPage() {
 
     setSaved(data);
   }
+  async function unsaveCollege(id: number) {
+  const token =
+    localStorage.getItem("token");
+
+  const res = await fetch(
+    `/api/saved/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (res.ok) {
+    alert("College removed");
+
+    fetchSaved();
+  }
+}
 
   useEffect(() => {
     fetchSaved();
@@ -51,6 +71,14 @@ export default function SavedPage() {
               Fees: ₹
               {item.college.fees}
             </p>
+            <button
+  onClick={() =>
+    unsaveCollege(item.id)
+  }
+  className="mt-3 bg-red-600 text-white px-4 py-2 rounded"
+>
+  Remove
+</button>
           </div>
         ))}
       </div>
