@@ -38,6 +38,7 @@ export default function Home() {
 }
   function logout() {
     localStorage.removeItem("token");
+    alert("You have been logged out successfully!");
     router.push("/");
   }
 
